@@ -1,4 +1,7 @@
+version: '3.8'
+
 services:
+
   orders:
     build:
       context: .
@@ -33,6 +36,21 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+
+  products:
+    build:
+      context: .
+      dockerfile: ./apps/products/dockerfile
+      target: development
+    command: npm run start:dev products
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3003:3003'
+
 
   rabbitmq:
     image: rabbitmq
@@ -72,10 +90,30 @@ services:
       - MONGODB_INITIAL_PRIMARY_HOST=mongodb-primary
       - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=password123
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment: 
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    depends_on:
+      - postgres
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin12
+    ports: 
+      - "8080:80"
 
 
 volumes:
   mongodb_master_data:
     driver: local
-
-  

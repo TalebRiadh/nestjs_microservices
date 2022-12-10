@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -13,3 +12,4 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
 })
 export class DatabaseModule {}
+
