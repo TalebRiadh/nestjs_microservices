@@ -1,22 +1,16 @@
 import { ObjectType, Field } from "@nestjs/graphql"
-import {Entity,  Column, PrimaryGeneratedColumn } from "typeorm"
+import { User } from "apps/users/src/entities/user.entity"
+import {Entity,  Column, JoinColumn, ManyToOne, RelationId} from "typeorm"
+import { Node } from "@app/common"
 
 
 @Entity()
 @ObjectType()
-export class Product {
-    
-    @PrimaryGeneratedColumn({
-        type: 'bigint',
-        name: 'user_id',
-      })
-      id: number;
+export class Product extends Node{
 
     @Field(() => String)
     @Column()
     title: string
-
-
 
     @Field(() => String)
     @Column()
@@ -30,4 +24,10 @@ export class Product {
     @Column()
     available: boolean
 
+    @ManyToOne(() => User, (user) => user.products)
+    @JoinColumn()
+    creator: User
+
+    @RelationId((self: Product) => self.creator)
+    readonly creatorId: User['id']
 }

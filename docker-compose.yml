@@ -50,6 +50,32 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3003:3003'
+  users:
+    build:
+      context: .
+      dockerfile: ./apps/users/dockerfile
+      target: development
+    command: npm run start:dev users
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3004:3004'
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/dockerfile
+      target: development
+    command: npm run start:dev auth
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '3005:3005'
 
 
   rabbitmq:
