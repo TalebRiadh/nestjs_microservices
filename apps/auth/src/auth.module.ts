@@ -1,4 +1,4 @@
-import { GqlModule } from '@app/common';
+import { GqlModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt/dist';
@@ -20,6 +20,7 @@ import { LocalStrategy } from './strategies/local.strategy';
   ],
   imports: [
     UsersModule, 
+    RmqModule,
     PassportModule, 
     ConfigModule.forRoot({ 
       isGlobal: true,
@@ -37,7 +38,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       inject: [ConfigService],
       useFactory: (ConfigService) => ({
         secret: ConfigService.get('JWT_SECRET'),
-        signOptions: {expiresIn: '10m' }
+        //signOptions: {expiresIn: '10m' }
       })
     }
   )]

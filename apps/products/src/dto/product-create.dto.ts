@@ -6,7 +6,7 @@ import { Product } from "../entities/product.entity";
 export class ProductCreateInput {
 
     @Field(() => String)
-    title: string
+    reference: string
 
     @Field(() => String)
     description: string

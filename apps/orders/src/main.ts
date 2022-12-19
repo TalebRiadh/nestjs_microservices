@@ -1,8 +1,19 @@
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger/dist';
 import { OrdersModule } from './orders.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(OrdersModule);
+
+  const config = new DocumentBuilder()
+  .setTitle('Orders example')
+  .setDescription('The Order API description')
+  .setVersion('1.0')
+  .addTag('orders')
+  .build()
+  const document = SwaggerModule.createDocument(app, config)
+  SwaggerModule.setup('api', app, document)
   await app.listen(3000);
 }
 bootstrap();

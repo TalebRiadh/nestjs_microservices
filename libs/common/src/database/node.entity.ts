@@ -9,10 +9,10 @@ export abstract class Node extends BaseEntity {
     id: string
 
     @Field(() => Date)
-    @CreateDateColumn({ name: 'created_at'})
+    @CreateDateColumn({ name: 'created_at', select:false})
     created_at: Date
 
     @Field(() => Date)
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)", select:false })
     updated_at: Date;   
 }

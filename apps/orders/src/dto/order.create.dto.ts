@@ -4,15 +4,22 @@ import {
     IsPositive,
     IsString,
   } from 'class-validator';
-  
-  export class CreateOrderRequest {
+
+
+  export class OrderCreateInput {
     @IsString()
     @IsNotEmpty()
     name: string;
   
     @IsPositive()
-    price: number;
+    totalprice: number;
   
     @IsPhoneNumber()
     phoneNumber: string;
+  }
+
+  export class OrderCreateOutput {
+    name: string
+    totalprice: number
+    phoneNumber: string
   }

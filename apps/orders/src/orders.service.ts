@@ -1,38 +1,39 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { BILLING_SERVICE } from './constants/services';
-import { CreateOrderRequest } from './dto/create-order.request';
-import { OrdersRepository } from './orders.repository';
-
+import {  OrderCreateInput, OrderCreateOutput } from './dto/order.create.dto';
+import { Repository } from 'typeorm';
+import { Order } from './schemas/order.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class OrdersService {
   constructor(
-    private readonly ordersRepository: OrdersRepository,
+    @InjectRepository(Order)
+    private readonly ordersRepository: Repository<Order>,
     @Inject(BILLING_SERVICE)
-    private billingClient: ClientProxy
-  ) {}
+    private billingClient: ClientProxy,
 
-  async createOrder(request: CreateOrderRequest){
-    const session = await this.ordersRepository.startTransaction()
-    try {
-      const order = await this.ordersRepository.create(request,{ session })
-      await lastValueFrom(
-        this.billingClient.emit('order_created', {
-          request,
-        }),
+  ) {
+    
+  }
 
-      )
-      await session.commitTransaction()
-      return order
-    } catch (err) {
-      await session.abortTransaction()
-      throw err
+  async create(input: OrderCreateInput, auth: string): Promise<OrderCreateOutput>{
+    const order = await this.ordersRepository.save(this.ordersRepository.create(input))
+    await lastValueFrom(
+      this.billingClient.emit('order_created', {input, Authentication: auth})
+    )
+    return {
+      name: order.name,
+      totalprice: order.totalprice,
+      phoneNumber: order.phoneNumber
     }
   }
-
-  async getOrders(){
-    return this.ordersRepository.find({})
+  async getOrders(): Promise<Order[]>{
+    return this.ordersRepository.find({select:['id', 'name', 'totalprice', 'phoneNumber']})
   }
 
+  async getOrderById(orderId: string): Promise<Order> {
+    return await this.ordersRepository.findOneBy({id:orderId});
+  }
 }

@@ -1,8 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth.module';
+import { ConfigService } from '@nestjs/config';
+import { RmqService } from '@app/common';
+import { RmqOptions } from '@nestjs/microservices';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
-  await app.listen(3005);
+  const rmqService = app.get<RmqService>(RmqService)
+  app.connectMicroservice<RmqOptions>(rmqService.getOptions('AUTH', true))
+  app.useGlobalPipes(new ValidationPipe())
+  const configService = app.get(ConfigService)
+  await app.startAllMicroservices()
 }
 bootstrap();

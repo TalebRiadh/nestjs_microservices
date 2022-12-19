@@ -2,7 +2,6 @@ import { GqlModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'apps/auth/src/auth.module';
 import * as Joi from 'joi';
 import { User } from './entities/user.entity';
 import { UserMutationsResolver } from './resolvers/user.mutations.resolver';

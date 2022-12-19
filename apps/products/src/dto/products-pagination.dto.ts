@@ -6,7 +6,7 @@ import { Pagination, PaginationArgs, PaginationSortBy, SortDirection } from "../
 @InputType()
 export class ProductsPaginaionSortBy extends PaginationSortBy {
     @Field(() => SortDirection, {nullable: true})
-    title?: SortDirection
+    reference?: SortDirection
 }
 
 

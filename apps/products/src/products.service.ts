@@ -40,7 +40,7 @@ export class ProductsService {
         input: ProductUpdateInput,
     )   : Promise<ProductUpdateOutput> {
         const product = await this.productsRepository.findOneByOrFail({id: productId})
-        product.title = input.title
+        product.reference = input.reference
         product.description = input.description
         product.price = input.price
         product.available = input.available
@@ -67,10 +67,10 @@ export class ProductsService {
                     args.sortBy.created_at === SortDirection.ASC ? "ASC" : "DESC"
                 )
             }
-            if(args.sortBy.title !== null){
+            if(args.sortBy.reference !== null){
                 qb.addOrderBy(
                     'product.title',
-                    args.sortBy.title === SortDirection.ASC ? "ASC" : "DESC"
+                    args.sortBy.reference === SortDirection.ASC ? "ASC" : "DESC"
                 )
             }
         }

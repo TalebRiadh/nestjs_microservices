@@ -10,7 +10,7 @@ export class Product extends Node{
 
     @Field(() => String)
     @Column()
-    title: string
+    reference: string
 
     @Field(() => String)
     @Column()
