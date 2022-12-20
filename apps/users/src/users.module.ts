@@ -3,9 +3,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { User } from './entities/user.entity';
-import { UserMutationsResolver } from './resolvers/user.mutations.resolver';
-import { UsersService } from './users.service';
+import { User } from './domain/models/user';
+import { UserMutationsResolver } from './infrastructure/resolvers/user.mutations.resolver';
+import { UsersService } from './application/users.service';
 
 @Module({
   imports: [

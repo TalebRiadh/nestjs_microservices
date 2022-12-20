@@ -1,17 +1,19 @@
 import { GqlModule, OrmModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ProductsService } from './products.service';
+import { ProductsService } from './application/products.service';
 import * as Joi from 'joi'
-import { Product } from './entities/product.entity';
+import { Product } from './domain/models/product';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductMutationsResolver } from './resolvers/product.mutations.resolver';
-import { ProductQueriesResolver } from './resolvers/product.queries.resolver';
+import { ProductMutationsResolver } from './infrastructure/resolvers/product.mutations.resolver';
+import { ProductQueriesResolver } from './infrastructure/resolvers/product.queries.resolver';
 import { UsersModule } from 'apps/users/src/users.module';
 import { AuthModule } from 'apps/auth/src/auth.module';
+import { OrdersModule } from 'apps/orders/src/orders.module';
 
 @Module({
   imports: [
+    OrdersModule,
     OrmModule,
     GqlModule,
     UsersModule,
