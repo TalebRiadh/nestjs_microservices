@@ -1,5 +1,5 @@
 import { GqlModule, RmqModule } from '@app/common';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt/dist';
 import { PassportModule } from '@nestjs/passport/dist';
@@ -20,7 +20,8 @@ import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
     JwtStrategy
   ],
   imports: [
-    UsersModule, 
+    forwardRef(() => UsersModule),
+
     RmqModule,
     PassportModule, 
     ConfigModule.forRoot({ 

@@ -1,5 +1,5 @@
 import { GqlModule, OrmModule } from '@app/common';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ProductsService } from './application/products.service';
 import * as Joi from 'joi'
@@ -12,12 +12,10 @@ import { AuthModule } from 'apps/auth/src/auth.module';
 import { OrdersModule } from 'apps/orders/src/orders.module';
 
 @Module({
+  
   imports: [
-    OrdersModule,
     OrmModule,
     GqlModule,
-    UsersModule,
-    AuthModule,
     TypeOrmModule.forFeature([Product]),
     ConfigModule.forRoot({ 
       isGlobal: true,
@@ -26,6 +24,9 @@ import { OrdersModule } from 'apps/orders/src/orders.module';
       }),
       envFilePath: './apps/products/.env',
      }),
+     forwardRef(() => UsersModule),
+     forwardRef(() => OrdersModule),
+     AuthModule,
 
   ],
   providers: [ProductsService, ProductMutationsResolver, ProductQueriesResolver],

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { OrmModule, RmqModule } from '@app/common';
@@ -15,8 +15,7 @@ import { OrderLine } from './domain/models/OrderLine';
 
 @Module({
   imports: [
-    OrmModule,
-    ProductsModule,
+    forwardRef(() => ProductsModule),
     AuthModule,
     UsersModule,
     TypeOrmModule.forFeature([Order, OrderLine]),
