@@ -16,8 +16,7 @@ import { OrderLine } from './domain/models/OrderLine';
 @Module({
   imports: [
     forwardRef(() => ProductsModule),
-    AuthModule,
-    UsersModule,
+    forwardRef(() => UsersModule),
     TypeOrmModule.forFeature([Order, OrderLine]),
     ConfigModule.forRoot({
       isGlobal: true,

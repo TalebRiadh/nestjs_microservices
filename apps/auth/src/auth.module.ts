@@ -1,15 +1,16 @@
-import { GqlModule, RmqModule } from '@app/common';
+import { RmqModule } from '@app/common';
 import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt/dist';
 import { PassportModule } from '@nestjs/passport/dist';
 import { UsersModule } from 'apps/users/src/users.module';
-import { UsersService } from 'apps/users/src/application/users.service';
 import  * as Joi from 'joi';
 import { AuthService } from './application/auth.service';
 import { AuthMutationResolver } from './infrastructure/resolvers/auth.mutations.resolver';
 import { LocalStrategy } from './infrastructure/strategies/local.strategy';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
+import { ProductsModule } from 'apps/products/src/products.module';
+import { OrdersModule } from 'apps/orders/src/orders.module';
 
 
 @Module({
@@ -20,8 +21,8 @@ import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
     JwtStrategy
   ],
   imports: [
+    forwardRef(() => ProductsModule),
     forwardRef(() => UsersModule),
-
     RmqModule,
     PassportModule, 
     ConfigModule.forRoot({ 

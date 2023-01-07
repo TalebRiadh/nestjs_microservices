@@ -1,4 +1,4 @@
-import { GqlModule, OrmModule } from '@app/common';
+import { GqlModule, OrmModule, PubsubModule } from '@app/common';
 import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ProductsService } from './application/products.service';
@@ -14,6 +14,10 @@ import { OrdersModule } from 'apps/orders/src/orders.module';
 @Module({
   
   imports: [
+    forwardRef(() => OrdersModule),
+    forwardRef(() => UsersModule),
+    forwardRef(() => AuthModule),
+    PubsubModule,
     OrmModule,
     GqlModule,
     TypeOrmModule.forFeature([Product]),
@@ -24,9 +28,8 @@ import { OrdersModule } from 'apps/orders/src/orders.module';
       }),
       envFilePath: './apps/products/.env',
      }),
-     forwardRef(() => UsersModule),
-     forwardRef(() => OrdersModule),
-     AuthModule,
+
+
 
   ],
   providers: [ProductsService, ProductMutationsResolver, ProductQueriesResolver],

@@ -7,11 +7,14 @@ import { User } from './domain/models/user';
 import { UserMutationsResolver } from './infrastructure/resolvers/user.mutations.resolver';
 import { UsersService } from './application/users.service';
 import { ProductsModule } from 'apps/products/src/products.module';
+import { OrdersModule } from 'apps/orders/src/orders.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
     forwardRef(() => ProductsModule),
+    forwardRef(() => OrdersModule),
+
+    TypeOrmModule.forFeature([User]),
     GqlModule,
     ConfigModule.forRoot({ 
       isGlobal: true,

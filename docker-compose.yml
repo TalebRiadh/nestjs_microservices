@@ -45,6 +45,8 @@ services:
       dockerfile: ./apps/products/dockerfile
       target: development
     command: npm run start:dev products
+    links:
+      - redis
     environment:
       DATABASE_URL: postgres://user:password@postgres:5432/db
     volumes:
@@ -82,7 +84,10 @@ services:
     image: rabbitmq
     ports:
       - '5672:5672'
-
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
   postgres:
     image: postgres
     restart: always
